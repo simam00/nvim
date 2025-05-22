@@ -38,7 +38,8 @@ return{
     config = function ()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<C-p>', builtin.find_files, { desc = 'Telescope find files' })
-      vim.keymap.set('n', '<C-f>', builtin.live_grep, { desc = 'Telescope live grep' })
+      vim.keymap.set('n', '<C-S-f>', builtin.live_grep, { desc = 'Telescope live grep' })
+      vim.keymap.set('n', '<C-S-p>', builtin.git_files, { desc = 'Telescope git files' })
       vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })  
     end
@@ -63,6 +64,36 @@ return{
     },
     config = function()
       require("nvim-tree").setup {}
+    end,
+  },
+
+  {
+    "mason-org/mason.nvim",
+    opts = {
+        ui = {
+            icons = {
+                package_installed = "✓",
+                package_pending = "➜",
+                package_uninstalled = "✗"
+            }
+        }
+    },
+    config = function()
+      require("mason").setup()
+    end
+  },
+
+  {
+    "mason-org/mason-lspconfig.nvim",
+    opts = {},
+    dependencies = {
+        { "mason-org/mason.nvim", opts = {} },
+        "neovim/nvim-lspconfig",
+    },
+    config = function()
+      require("mason-lspconfig").setup {
+        ensure_installed = { "lua_ls", "rust_analyzer", "clangd", "clang-format", "pyright", "verible", "svlangserver"},
+      }
     end,
   },
 }
