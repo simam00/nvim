@@ -26,4 +26,35 @@ vim.keymap.set('n', '<leader>P', '"+P')  -- paste before cursor
 --  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 --end
 
+--vim.fn.sign_define("DiagnosticSignError", {text = "", texthl = "DiagnosticError"})
+--vim.fn.sign_define("DiagnosticSignWarn",  {text = "", texthl = "DiagnosticWarn"})
+--vim.fn.sign_define("DiagnosticSignInfo",  {text = "", texthl = "DiagnosticInfo"})
+--vim.fn.sign_define("DiagnosticSignHint",  {text = "", texthl = "DiagnosticHint"})
+
+vim.diagnostic.config({
+  virtual_text = true,
+  virtual_text = {
+    prefix = "●",  -- or use "●", "■", "→" or just a simple character
+    spacing = 4,
+    format = function(diagnostic)
+      local msg = diagnostic.message
+      local max_len = 125 
+      if #msg > max_len then
+        msg = msg:sub(1, max_len - 3) .. "..."
+      end
+      return msg
+    end,
+  },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.INFO] = "󰋼 ",
+      [vim.diagnostic.severity.HINT] = "󰌵 ",
+    },
+  },
+})
+vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, {})
+
 require("config.lazy")
+require("config.verible")
