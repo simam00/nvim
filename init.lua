@@ -56,5 +56,8 @@ vim.diagnostic.config({
 })
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, {})
 
+vim.lsp.set_log_level("debug")
+
 require("config.lazy")
 require("config.verible")
+require("config.svlangserver")
